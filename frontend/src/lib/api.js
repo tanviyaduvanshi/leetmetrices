@@ -3,13 +3,14 @@ import axios from 'axios'
 /**
  * Axios instance with base URL and default config
  */
-const api = axios.create({
-  baseURL: '/api',
+const ObjectConfig = {
+  baseURL: import.meta.env.VITE_API_URL || 'https://leetmetrices-api.onrender.com/api',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
-})
+}
+const api = axios.create(ObjectConfig)
 
 // ─── Response interceptor ───────────────────────────────────────
 api.interceptors.response.use(

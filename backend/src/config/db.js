@@ -13,9 +13,9 @@ const connectDB = async () => {
   if (!mongoUri || mongoUri.includes('xxxxx')) {
     console.error('\n❌ CRITICAL: database URI is missing or contains a placeholder "xxxxx".');
     console.error('   Environment variables checked: MONGO_URI, MONGODB_URI');
-    console.error('   Please update your Render Environment Variables with your actual MongoDB Atlas connection string.\n');
+    console.error('   Please update your hosting platform\'s Environment Variables (Railway/Render) with your actual MongoDB Atlas connection string.\n');
     
-    // Give time for console.error to flush to Render logs
+    // Give time for logs to flush
     await new Promise(resolve => setTimeout(resolve, 1000));
     process.exit(1);
   }
@@ -38,7 +38,7 @@ const connectDB = async () => {
       if (err.message.includes('ENOTFOUND')) {
         console.error('💡 Troubleshooting Tip: This is a DNS error.');
         console.error('   1. Ensure you are not using a proxy/VPN that blocks SRV records.');
-        console.error('   2. If on Render/Heroku, try the "Standard Connection String" (starts with mongodb:// instead of mongodb+srv://).');
+        console.error('   2. If on a cloud platform, try the "Standard Connection String" (starts with mongodb:// instead of mongodb+srv://).');
         console.error('   3. Check if your MongoDB Atlas cluster is active.');
       }
 
@@ -48,7 +48,7 @@ const connectDB = async () => {
         process.exit(1);
       }
       
-      // Exponential backoff: 2s, 4s, 6s...
+      // Exponential backoff
       const waitTime = 2000 * retries;
       console.log(`   Retrying in ${waitTime / 1000}s...`);
       await new Promise(resolve => setTimeout(resolve, waitTime));

@@ -23,6 +23,13 @@ async function startServer() {
   console.log('[STARTUP] Starting LeetMetrices API...');
   
   try {
+    // 0. Validate Environment
+    if (!process.env.JWT_SECRET) {
+      console.error('[STARTUP] FATAL: JWT_SECRET environment variable is not set!');
+      console.error('           Authentication will not work without it.');
+      process.exit(1);
+    }
+
     // 1. Connect Database (Will exit process if URI is missing/placeholder)
     console.log('[STARTUP] Initializing database connection...');
     await connectDB();

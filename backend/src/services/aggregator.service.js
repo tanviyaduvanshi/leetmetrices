@@ -34,11 +34,21 @@ const fetchAllStats = async (user, forceRefresh = false) => {
   const CACHE_TTL_MINUTES = 30;
   const now = new Date();
 
-  // Check cache
-  if (!forceRefresh && user.lastFetched) {
+  // Check cache and cooldown
+  if (user.lastFetched) {
     const diffMs = now - new Date(user.lastFetched);
-    if (diffMs < CACHE_TTL_MINUTES * 60 * 1000) {
+    const diffMinutes = diffMs / (60 * 1000);
+
+    // 1. If not forcing, use cache if it's within TTL
+    if (!forceRefresh && diffMinutes < CACHE_TTL_MINUTES) {
       return user.cachedStats;
+    }
+
+    // 2. If forcing, enforce a cooldown (e.g., 5 minutes) to avoid platform rate limits
+    const REFRESH_COOLDOWN_MINUTES = 5;
+    if (forceRefresh && diffMinutes < REFRESH_COOLDOWN_MINUTES) {
+      const waitTime = Math.ceil(REFRESH_COOLDOWN_MINUTES - diffMinutes);
+      throw new Error(`Please wait ${waitTime} minute${waitTime > 1 ? 's' : ''} before refreshing again.`);
     }
   }
 

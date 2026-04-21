@@ -10,8 +10,13 @@ const router = express.Router();
  */
 router.get('/', async (req, res) => {
   try {
-    const { limit = 20, platform } = req.query;
-    const users = await User.find({ isActive: true })
+    const { limit = 20 } = req.query;
+    
+    // Fetch only active users who have solved at least one problem
+    const users = await User.find({ 
+      isActive: true,
+      'cachedStats.aggregated.totalSolved': { $gt: 0 } 
+    })
       .select('username avatar bio cachedStats streak platforms')
       .lean();
 

@@ -37,6 +37,7 @@ export default function DashboardPage() {
   const { data: histData } = useQuery({
     queryKey: ['statsHistory'],
     queryFn: () => statsAPI.getHistory({ days: 30 }).then(r => r.data),
+    staleTime: 10 * 60 * 1000, // 10 minutes
   })
 
   const platforms = user?.platforms || {}
@@ -146,7 +147,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Main content grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
+      <div className="dashboard-grid">
         {/* Difficulty Donut */}
         <div className="card">
           <h4 style={{ marginBottom: '1rem' }}>Difficulty Breakdown</h4>
@@ -191,7 +192,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Progress over time + Acceptance rate */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
+      <div className="dashboard-grid-main">
         <div className="card">
           <h4 style={{ marginBottom: '1rem' }}>Progress Over Time</h4>
           {isLoading ? (

@@ -1,14 +1,23 @@
 #!/bin/bash
 
 # LeetMetrices Startup Script
-# This script is a fallback for build systems like Railpack that look for a root entry point.
+echo "------------------------------------------------"
+echo "🚀 [ROOT] Bootstrapping LeetMetrices Monorepo..."
+echo "📍 [ROOT] Current Path: $(pwd)"
+echo "📌 [ROOT] Files in root: $(ls -F)"
 
-echo "🚀 Bootstrapping LeetMetrices Monorepo..."
-
-# Navigate to backend and start
-echo "📂 Moving to backend directory..."
-cd backend
-
-# Start the application
-echo "⚡ Starting LeetMetrices Backend..."
-npm start
+# Verify backend directory exists
+if [ -d "backend" ]; then
+    echo "✅ [ROOT] Backend directory found."
+    echo "📂 [ROOT] Navigating to /backend..."
+    cd backend
+    
+    echo "⚡ [ROOT] Starting LeetMetrices Backend..."
+    # Use npm start from within the backend folder
+    npm start
+else
+    echo "❌ [ROOT] ERROR: backend directory not found!"
+    echo "📜 [ROOT] Listing root contents for debugging:"
+    ls -R
+    exit 1
+fi

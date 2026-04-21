@@ -1,7 +1,7 @@
 {
   "name": "leetmetrices-root",
   "private": true,
-  "description": "Root configuration for LeetMetrices monorepo",
+  "description": "Root configuration for LeetMetrices monorepo - optimized for Railway",
   "workspaces": [
     "backend",
     "frontend"
@@ -9,6 +9,8 @@
   "scripts": {
     "build": "npm install --include=dev",
     "start": "npm start --workspace=backend",
+    "railway:build": "npm install --include=dev && npm run build --workspace=backend",
+    "railway:start": "npm start --workspace=backend",
     "install:all": "npm install && npm install --workspace=backend && npm install --workspace=frontend",
     "dev:backend": "npm run dev --workspace=backend",
     "dev:frontend": "npm run dev --workspace=frontend"
